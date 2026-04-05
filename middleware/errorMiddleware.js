@@ -12,9 +12,10 @@ const errorHandler = (err, req, res, next) => {
       .join(", ");
   }
 
-  res.status(statusCode).json({
-    message,
-  });
+ res.status(statusCode).json({
+  success: false,
+  message,
+});
 };
 
 module.exports = errorHandler;

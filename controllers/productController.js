@@ -4,7 +4,11 @@ const Product = require("../models/productModel");
 const getAllProducts = async (req, res) => {
   try {
     const products = await Product.find();
-    res.send(products);
+    res.json({
+  success: true,
+  message: "Products fetched successfully",
+  data: products
+});
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -20,7 +24,11 @@ const getProductById = async (req, res, next) => {
       throw new Error("Product not found");
     }
 
-    res.send(product);
+    res.json({
+  success: true,
+  message: "Product fetched successfully",
+  data: product
+});
   } catch (error) {
     next(error);
   }
@@ -37,7 +45,11 @@ const createProduct = async (req, res, next) => {
 
     await product.save();
 
-    res.status(201).send(product);
+    res.status(201).json({
+  success: true,
+  message: "Product created successfully",
+  data: product
+});
   } catch (error) {
   next(error);
 }
@@ -57,7 +69,11 @@ const updateProduct = async (req, res) => {
       return res.status(404).send("Product not found");
     }
 
-    res.send(product);
+    res.json({
+  success: true,
+  message: "Product updated successfully",
+  data: product
+});
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -71,7 +87,10 @@ const deleteProduct = async (req, res) => {
       return res.status(404).send("Product not found");
     }
 
-    res.send("Product deleted successfully");
+    res.json({
+  success: true,
+  message: "Product deleted successfully"
+});
   } catch (error) {
     res.status(500).send(error.message);
   }
