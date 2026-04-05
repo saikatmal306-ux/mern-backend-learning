@@ -47,6 +47,8 @@ app.use((req, res) => {
   res.status(404).send("Page not found");
 });
 
+app.use(errorHandler);
+
 // ✅ START SERVER ONLY AFTER DB CONNECTS
 const startServer = async () => {
   try {
@@ -61,4 +63,3 @@ const startServer = async () => {
 };
 
 startServer();
-app.use(errorHandler);
