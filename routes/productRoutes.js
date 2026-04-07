@@ -12,7 +12,9 @@ const express = require("express");
 const router = express.Router();
 
 // Route to get all products
-router.get("/", getAllProducts);
+const protect = require("../middleware/authMiddleware");
+
+router.get("/", protect, getAllProducts);
 router.get("/:id", getProductById);
 router.post("/", createProduct);
 router.put("/:id", updateProduct);
