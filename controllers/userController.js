@@ -53,7 +53,45 @@ const loginUser = async (req, res) => {
 });
 };
 
+const getUserProfile = async (req, res) => {
+  res.json({
+    success: true,
+    data: req.user,
+  });
+};
+
+const updateUserProfile = async (req, res) => {
+  // 🔹 Find current user using req.user
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  // 🔹 Update fields (if provided)
+  user.name = req.body.name || user.name;
+  user.email = req.body.email || user.email;
+
+  // 🔹 Save updated user
+  const updatedUser = await user.save();
+
+  // 🔹 Remove password
+  const userData = updatedUser.toObject();
+  delete userData.password;
+
+  // 🔹 Send response
+  res.json({
+    success: true,
+    message: "Profile updated",
+    data: userData,
+  });
+};
+
 module.exports = {
   registerUser,
   loginUser,
+  getUserProfile,
+  updateUserProfile,
 };
+
