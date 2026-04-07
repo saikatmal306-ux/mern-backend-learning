@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const generateToken = require("../utils/generateToken");
 
 // 🔥 REGISTER USER
 const registerUser = async (req, res) => {
@@ -25,19 +26,31 @@ const loginUser = async (req, res) => {
 
   const user = await User.findOne({ email });
 
-  if (user && (await user.matchPassword(password))) {
-    const userData = user.toObject();  // convert mongoose document to plain object
-delete userData.password;          // remove password field
-
-res.json({
-  success: true,
-  message: "Login successful",
-  data: userData,
-});
-  } else {
+  // ❗ Step 1: check if user exists
+  if (!user) {
     res.status(401);
     throw new Error("Invalid email or password");
   }
+
+  // ❗ Step 2: check password
+  const isMatch = await user.matchPassword(password);
+
+  if (!isMatch) {
+    res.status(401);
+    throw new Error("Invalid email or password");
+  }
+
+  // ❗ Step 3: remove password
+  const userData = user.toObject();
+  delete userData.password;
+
+  // ❗ Step 4: send response
+  res.json({
+  success: true,
+  message: "Login successful",
+  data: userData,
+  token: generateToken(user._id),
+});
 };
 
 module.exports = {
