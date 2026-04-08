@@ -26,13 +26,13 @@ const loginUser = async (req, res) => {
 
   const user = await User.findOne({ email });
 
-  // ❗ Step 1: check if user exists
+  // ❗ Check user exists
   if (!user) {
     res.status(401);
     throw new Error("Invalid email or password");
   }
 
-  // ❗ Step 2: check password
+  // ❗ Check password
   const isMatch = await user.matchPassword(password);
 
   if (!isMatch) {
@@ -40,17 +40,15 @@ const loginUser = async (req, res) => {
     throw new Error("Invalid email or password");
   }
 
-  // ❗ Step 3: remove password
+  // ❗ Remove password
   const userData = user.toObject();
   delete userData.password;
 
-  // ❗ Step 4: send response
   res.json({
-  success: true,
-  message: "Login successful",
-  data: userData,
-  token: generateToken(user._id),
-});
+    success: true,
+    message: "Login successful",
+    data: userData,
+  });
 };
 
 const getUserProfile = async (req, res) => {
@@ -88,10 +86,29 @@ const updateUserProfile = async (req, res) => {
   });
 };
 
+const deleteUserProfile = async (req, res) => {
+  // 🔹 Find user
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  // 🔹 Delete user
+  await user.deleteOne();
+
+  res.json({
+    success: true,
+    message: "User account deleted",
+  });
+};
+
 module.exports = {
   registerUser,
   loginUser,
   getUserProfile,
   updateUserProfile,
+  deleteUserProfile,
 };
 
