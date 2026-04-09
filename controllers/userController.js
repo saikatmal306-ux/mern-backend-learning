@@ -45,10 +45,11 @@ const loginUser = async (req, res) => {
   delete userData.password;
 
   res.json({
-    success: true,
-    message: "Login successful",
-    data: userData,
-  });
+  success: true,
+  message: "Login successful",
+  data: userData,
+  token: generateToken(user._id), // 🔥 ADD THIS
+});
 };
 
 const getUserProfile = async (req, res) => {

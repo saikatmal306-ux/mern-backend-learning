@@ -3,7 +3,7 @@ const Product = require("../models/productModel");
 // Controller to get all products
 const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find({ user: req.user._id });
     res.json({
   success: true,
   message: "Products fetched successfully",
@@ -41,18 +41,19 @@ const createProduct = async (req, res, next) => {
     const product = new Product({
       name,
       price,
+      user: req.user._id, // 🔥 important
     });
 
     await product.save();
 
     res.status(201).json({
-  success: true,
-  message: "Product created successfully",
-  data: product
-});
+      success: true,
+      message: "Product created successfully",
+      data: product,
+    });
   } catch (error) {
-  next(error);
-}
+    next(error);
+  }
 };
 
 const updateProduct = async (req, res) => {
