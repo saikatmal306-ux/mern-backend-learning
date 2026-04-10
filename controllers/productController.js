@@ -3,7 +3,8 @@ const Product = require("../models/productModel");
 // Controller to get all products
 const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find({ user: req.user._id });
+    const products = await Product.find({ user: req.user._id })
+  .populate("user", "name email");
     res.json({
   success: true,
   message: "Products fetched successfully",
