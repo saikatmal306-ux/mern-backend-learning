@@ -57,44 +57,62 @@ const createProduct = async (req, res, next) => {
   }
 };
 
-const updateProduct = async (req, res) => {
+const updateProduct = async (req, res, next) => {
   try {
-    const { name, price } = req.body;
+    const product = await Product.findById(req.params.id);
 
-    const product = await Product.findByIdAndUpdate(
-      req.params.id,
-      { name, price },
-      { new: true } // return updated data
-    );
-
+    // ❗ Check product exists
     if (!product) {
-      return res.status(404).send("Product not found");
+      res.status(404);
+      throw new Error("Product not found");
     }
 
+    // 🔥 AUTHORIZATION CHECK
+    if (product.user.toString() !== req.user._id.toString()) {
+      res.status(403);
+      throw new Error("Not authorized to update this product");
+    }
+
+    // 🔹 Update fields
+    product.name = req.body.name || product.name;
+    product.price = req.body.price || product.price;
+
+    await product.save();
+
     res.json({
-  success: true,
-  message: "Product updated successfully",
-  data: product
-});
+      success: true,
+      message: "Product updated",
+      data: product,
+    });
   } catch (error) {
-    res.status(500).send(error.message);
+    next(error);
   }
 };
 
-const deleteProduct = async (req, res) => {
+const deleteProduct = async (req, res, next) => {
   try {
-    const product = await Product.findByIdAndDelete(req.params.id);
+    const product = await Product.findById(req.params.id);
 
+    // ❗ Check product exists
     if (!product) {
-      return res.status(404).send("Product not found");
+      res.status(404);
+      throw new Error("Product not found");
     }
 
+    // 🔥 AUTHORIZATION CHECK
+    if (product.user.toString() !== req.user._id.toString()) {
+      res.status(403);
+      throw new Error("Not authorized to delete this product");
+    }
+
+    await product.deleteOne();
+
     res.json({
-  success: true,
-  message: "Product deleted successfully"
-});
+      success: true,
+      message: "Product deleted",
+    });
   } catch (error) {
-    res.status(500).send(error.message);
+    next(error);
   }
 };
 
