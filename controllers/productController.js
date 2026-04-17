@@ -1,4 +1,5 @@
 const Product = require("../models/productModel");
+const { createProductService } = require("../services/productService");
 
 // Controller to get all products
 const getAllProducts = async (req, res) => {
@@ -35,17 +36,11 @@ const getProductById = async (req, res, next) => {
   }
 };
 
+
+
 const createProduct = async (req, res, next) => {
   try {
-    const { name, price } = req.body;
-
-    const product = new Product({
-      name,
-      price,
-      user: req.user._id, // 🔥 important
-    });
-
-    await product.save();
+    const product = await createProductService(req.body, req.user._id);
 
     res.status(201).json({
       success: true,

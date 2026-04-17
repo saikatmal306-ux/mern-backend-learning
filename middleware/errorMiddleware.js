@@ -1,6 +1,6 @@
 const errorHandler = (err, req, res, next) => {
-  let statusCode =
-    res.statusCode && res.statusCode !== 200 ? res.statusCode : 500;
+  let statusCode = err.statusCode || 
+    (res.statusCode && res.statusCode !== 200 ? res.statusCode : 500);
 
   let message = err.message;
 
@@ -12,10 +12,10 @@ const errorHandler = (err, req, res, next) => {
       .join(", ");
   }
 
- res.status(statusCode).json({
-  success: false,
-  message,
-});
+  res.status(statusCode).json({
+    success: false,
+    message,
+  });
 };
 
 module.exports = errorHandler;
