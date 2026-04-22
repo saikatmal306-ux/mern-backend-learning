@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import LoginForm from "./components/LoginForm";
+import Profile from "./components/Profile";
 
 function App() {
   const [email, setEmail] = useState("");
@@ -75,38 +77,25 @@ const handleLogout = () => {
   localStorage.removeItem("token"); // remove token
   setUser(null); // clear state
 };
-
-  return (
-    <div>
-      {user ? (
+return (
   <div>
-    <h2>{user.name}</h2>
-    <p>{user.email}</p>
-    <button onClick={handleLogout}>Logout</button>
+    {user ? (
+      <Profile
+        user={user}
+        handleLogout={handleLogout}
+      />
+    ) : (
+      <LoginForm
+        email={email}
+        password={password}
+        setEmail={setEmail}
+        setPassword={setPassword}
+        handleLogin={handleLogin}
+      />
+    )}
   </div>
-) : (
-  <div>
-    <h1>Login</h1>
-
-    <input
-      type="email"
-      placeholder="Enter email"
-      value={email}
-      onChange={(e) => setEmail(e.target.value)}
-    />
-
-    <input
-      type="password"
-      placeholder="Enter password"
-      value={password}
-      onChange={(e) => setPassword(e.target.value)}
-    />
-
-    <button onClick={handleLogin}>Login</button>
-  </div>
-)}
-    </div>
-  );
+);
+  
 }
 
 
