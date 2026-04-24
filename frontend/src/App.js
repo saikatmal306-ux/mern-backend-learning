@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import LoginForm from "./components/LoginForm";
+import ProductForm from "./components/ProductForm";
 import Profile from "./components/Profile";
 
 function App() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
 
   const handleLogin = async () => {
   try {
@@ -23,6 +26,33 @@ function App() {
     // 🔥 STORE TOKEN
     localStorage.setItem("token", res.data.token);
     setUser(res.data.data);
+
+  } catch (error) {
+    console.log(error.response?.data || error.message);
+  }
+};
+
+const handleProductCreate = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await axios.post(
+      "http://localhost:5000/api/products",
+      {
+        name,
+        price
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    console.log(res.data);
+
+    setName("");
+    setPrice("");
 
   } catch (error) {
     console.log(error.response?.data || error.message);
@@ -83,7 +113,12 @@ return (
       <Profile
         user={user}
         handleLogout={handleLogout}
-      />
+        name={name}
+        price={price}
+        setName={setName}
+        setPrice={setPrice}
+        handleProductCreate={handleProductCreate}
+        />
     ) : (
       <LoginForm
         email={email}

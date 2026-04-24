@@ -1,0 +1,33 @@
+function ProductForm({
+  name,
+  price,
+  setName,
+  setPrice,
+  handleProductCreate
+}) {
+  return (
+    <div>
+      <h1>Create Product</h1>
+
+      <input
+        type="text"
+        placeholder="Product Name"
+        value={name}
+        onChange={(e)=>setName(e.target.value)}
+      />
+
+      <input
+        type="number"
+        placeholder="Price"
+        value={price}
+        onChange={(e)=>setPrice(e.target.value)}
+      />
+
+      <button onClick={handleProductCreate}>
+        Add Product
+      </button>
+    </div>
+  );
+}
+
+export default ProductForm;
