@@ -10,6 +10,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
+  const [products, setProducts] = useState([]);
 
   const handleLogin = async () => {
   try {
@@ -51,6 +52,8 @@ const handleProductCreate = async () => {
 
     console.log(res.data);
 
+    fetchProducts();
+
     setName("");
     setPrice("");
 
@@ -78,6 +81,26 @@ const getProfile = async () => {
   }
 };
 
+const fetchProducts = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await axios.get(
+      "http://localhost:5000/api/products",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    setProducts(res.data.data);
+
+  } catch(error){
+    console.log(error.response?.data || error.message);
+  }
+};
+
 useEffect(() => {
   const fetchUser = async () => {
     try {
@@ -95,6 +118,7 @@ useEffect(() => {
       );
 
       setUser(res.data.data);
+      fetchProducts();
     } catch (error) {
       console.log(error.response?.data || error.message);
     }
@@ -118,6 +142,7 @@ return (
         setName={setName}
         setPrice={setPrice}
         handleProductCreate={handleProductCreate}
+        products={products}
         />
     ) : (
       <LoginForm

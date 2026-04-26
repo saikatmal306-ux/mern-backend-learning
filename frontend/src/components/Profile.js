@@ -1,4 +1,5 @@
 import ProductForm from "./ProductForm";
+import ProductList from "./ProductList";
 
 function Profile({
   user,
@@ -7,7 +8,8 @@ function Profile({
   price,
   setName,
   setPrice,
-  handleProductCreate
+  handleProductCreate,
+  products
 }) {
   return (
     <div>
@@ -23,7 +25,9 @@ function Profile({
   setName={setName}
   setPrice={setPrice}
   handleProductCreate={handleProductCreate}
+  
 />
+<ProductList products={products} />
     </div>
   );
 }
