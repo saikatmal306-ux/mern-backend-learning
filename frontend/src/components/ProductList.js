@@ -1,18 +1,23 @@
-function ProductList({ products }) {
-  return (
-    <div>
-      <h2>My Products</h2>
+function ProductList({
+ products,
+ handleDeleteProduct
+}) {
+  return products.map((product) => (
+    <div key={product._id}>
+      <p>{product.name}</p>
+      <p>${product.price}</p>
 
-      {products.map((product) => (
-        <div key={product._id}>
-          <p>{product.name}</p>
-          <p>${product.price}</p>
-          <hr />
-        </div>
-      ))}
+      <button
+        onClick={() =>
+          handleDeleteProduct(product._id)
+        }
+      >
+        Delete
+      </button>
 
+      <hr />
     </div>
-  );
+  ));
 }
 
 export default ProductList;

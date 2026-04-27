@@ -9,7 +9,8 @@ function Profile({
   setName,
   setPrice,
   handleProductCreate,
-  products
+  products,
+  handleDeleteProduct
 }) {
   return (
     <div>
@@ -27,7 +28,10 @@ function Profile({
   handleProductCreate={handleProductCreate}
   
 />
-<ProductList products={products} />
+<ProductList
+ products={products}
+ handleDeleteProduct={handleDeleteProduct}
+/>
     </div>
   );
 }

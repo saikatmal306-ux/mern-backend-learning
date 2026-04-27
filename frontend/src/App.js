@@ -27,6 +27,7 @@ function App() {
     // 🔥 STORE TOKEN
     localStorage.setItem("token", res.data.token);
     setUser(res.data.data);
+    fetchProducts();
 
   } catch (error) {
     console.log(error.response?.data || error.message);
@@ -58,6 +59,27 @@ const handleProductCreate = async () => {
     setPrice("");
 
   } catch (error) {
+    console.log(error.response?.data || error.message);
+  }
+};
+
+const handleDeleteProduct = async (id) => {
+  try {
+
+    const token = localStorage.getItem("token");
+
+    await axios.delete(
+      `http://localhost:5000/api/products/${id}`,
+      {
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      }
+    );
+
+    fetchProducts();
+
+  } catch(error){
     console.log(error.response?.data || error.message);
   }
 };
@@ -143,6 +165,7 @@ return (
         setPrice={setPrice}
         handleProductCreate={handleProductCreate}
         products={products}
+        handleDeleteProduct={handleDeleteProduct}
         />
     ) : (
       <LoginForm
