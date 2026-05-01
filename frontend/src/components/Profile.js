@@ -10,7 +10,10 @@ function Profile({
   setPrice,
   handleProductCreate,
   products,
-  handleDeleteProduct
+  handleDeleteProduct,
+  editId,
+  setEditId,
+  handleEdit
 }) {
   return (
     <div>
@@ -26,11 +29,13 @@ function Profile({
   setName={setName}
   setPrice={setPrice}
   handleProductCreate={handleProductCreate}
+  editId={editId}
   
 />
 <ProductList
  products={products}
  handleDeleteProduct={handleDeleteProduct}
+ handleEdit={handleEdit}
 />
     </div>
   );

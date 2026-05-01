@@ -3,7 +3,8 @@ function ProductForm({
   price,
   setName,
   setPrice,
-  handleProductCreate
+  handleProductCreate,
+  editId
 }) {
   return (
     <div>
@@ -24,8 +25,8 @@ function ProductForm({
       />
 
       <button onClick={handleProductCreate}>
-        Add Product
-      </button>
+  {editId ? "Update Product" : "Add Product"}
+</button>
     </div>
   );
 }

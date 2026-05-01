@@ -1,6 +1,7 @@
 function ProductList({
  products,
- handleDeleteProduct
+ handleDeleteProduct,
+ handleEdit
 }) {
   return products.map((product) => (
     <div key={product._id}>
@@ -14,6 +15,10 @@ function ProductList({
       >
         Delete
       </button>
+
+      <button onClick={() => handleEdit(product)}>
+  Edit
+</button>
 
       <hr />
     </div>

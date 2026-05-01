@@ -11,6 +11,7 @@ function App() {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [products, setProducts] = useState([]);
+  const [editId, setEditId] = useState(null);
 
   const handleLogin = async () => {
   try {
@@ -38,25 +39,35 @@ const handleProductCreate = async () => {
   try {
     const token = localStorage.getItem("token");
 
-    const res = await axios.post(
-      "http://localhost:5000/api/products",
-      {
-        name,
-        price
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
+    if (editId) {
+      // UPDATE
+      await axios.put(
+        `http://localhost:5000/api/products/${editId}`,
+        { name, price },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
-      }
-    );
-
-    console.log(res.data);
+      );
+    } else {
+      // CREATE
+      await axios.post(
+        "http://localhost:5000/api/products",
+        { name, price },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+    }
 
     fetchProducts();
 
     setName("");
     setPrice("");
+    setEditId(null);
 
   } catch (error) {
     console.log(error.response?.data || error.message);
@@ -123,6 +134,12 @@ const fetchProducts = async () => {
   }
 };
 
+const handleEdit = (product) => {
+  setEditId(product._id);
+  setName(product.name);
+  setPrice(product.price);
+};
+
 useEffect(() => {
   const fetchUser = async () => {
     try {
@@ -166,6 +183,8 @@ return (
         handleProductCreate={handleProductCreate}
         products={products}
         handleDeleteProduct={handleDeleteProduct}
+         editId={editId}
+        handleEdit={handleEdit}
         />
     ) : (
       <LoginForm
