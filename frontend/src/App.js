@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { AppContext } from "./context/AppContext";
 import axios from "axios";
 import LoginForm from "./components/LoginForm";
 import ProductForm from "./components/ProductForm";
@@ -171,31 +172,37 @@ const handleLogout = () => {
   setUser(null); // clear state
 };
 return (
-  <div>
-    {user ? (
-      <Profile
-        user={user}
-        handleLogout={handleLogout}
-        name={name}
-        price={price}
-        setName={setName}
-        setPrice={setPrice}
-        handleProductCreate={handleProductCreate}
-        products={products}
-        handleDeleteProduct={handleDeleteProduct}
-         editId={editId}
-        handleEdit={handleEdit}
+  <AppContext.Provider
+    value={{
+      user,
+      setUser,
+      name,
+      setName,
+      price,
+      setPrice,
+      products,
+      setProducts,
+      editId,
+      setEditId,
+      handleProductCreate,
+      handleDeleteProduct,
+      handleEdit
+    }}
+  >
+    <div>
+      {user ? (
+        <Profile handleLogout={handleLogout} />
+      ) : (
+        <LoginForm
+          email={email}
+          password={password}
+          setEmail={setEmail}
+          setPassword={setPassword}
+          handleLogin={handleLogin}
         />
-    ) : (
-      <LoginForm
-        email={email}
-        password={password}
-        setEmail={setEmail}
-        setPassword={setPassword}
-        handleLogin={handleLogin}
-      />
-    )}
-  </div>
+      )}
+    </div>
+  </AppContext.Provider>
 );
   
 }

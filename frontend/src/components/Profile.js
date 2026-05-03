@@ -1,9 +1,11 @@
 import ProductForm from "./ProductForm";
 import ProductList from "./ProductList";
+import { useContext } from "react";
+import { AppContext } from "../context/AppContext";
 
-function Profile({
+function Profile({ handleLogout }) {
+  const {
   user,
-  handleLogout,
   name,
   price,
   setName,
@@ -11,10 +13,9 @@ function Profile({
   handleProductCreate,
   products,
   handleDeleteProduct,
-  editId,
-  setEditId,
-  handleEdit
-}) {
+  handleEdit,
+  editId
+} = useContext(AppContext);
   return (
     <div>
       <h2>{user.name}</h2>
@@ -32,11 +33,7 @@ function Profile({
   editId={editId}
   
 />
-<ProductList
- products={products}
- handleDeleteProduct={handleDeleteProduct}
- handleEdit={handleEdit}
-/>
+<ProductList />
     </div>
   );
 }

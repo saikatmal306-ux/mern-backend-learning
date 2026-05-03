@@ -1,8 +1,13 @@
-function ProductList({
- products,
- handleDeleteProduct,
- handleEdit
-}) {
+import { useContext } from "react";
+import { AppContext } from "../context/AppContext";
+
+function ProductList() {
+  const {
+  products,
+  handleDeleteProduct,
+  handleEdit
+} = useContext(AppContext);
+
   return products.map((product) => (
     <div key={product._id}>
       <p>{product.name}</p>

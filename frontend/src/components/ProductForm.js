@@ -1,11 +1,16 @@
-function ProductForm({
+import { useContext } from "react";
+import { AppContext } from "../context/AppContext";
+
+function ProductForm() {
+  const {
   name,
   price,
   setName,
   setPrice,
   handleProductCreate,
   editId
-}) {
+} = useContext(AppContext);
+
   return (
     <div>
       <h1>Create Product</h1>
