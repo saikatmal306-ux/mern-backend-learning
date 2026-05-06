@@ -5,7 +5,8 @@ function ProductList() {
   const {
   products,
   handleDeleteProduct,
-  handleEdit
+  handleEdit,
+  loading 
 } = useContext(AppContext);
 
   return products.map((product) => (
@@ -14,12 +15,11 @@ function ProductList() {
       <p>${product.price}</p>
 
       <button
-        onClick={() =>
-          handleDeleteProduct(product._id)
-        }
-      >
-        Delete
-      </button>
+  onClick={() => handleDeleteProduct(product._id)}
+  disabled={loading}
+>
+  {loading ? "Deleting..." : "Delete"}
+</button>
 
       <button onClick={() => handleEdit(product)}>
   Edit

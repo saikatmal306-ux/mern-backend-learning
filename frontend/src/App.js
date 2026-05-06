@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { AppContext } from "./context/AppContext";
 import axios from "axios";
 import LoginForm from "./components/LoginForm";
-import ProductForm from "./components/ProductForm";
 import Profile from "./components/Profile";
 
 function App() {
@@ -13,6 +12,8 @@ function App() {
   const [price, setPrice] = useState("");
   const [products, setProducts] = useState([]);
   const [editId, setEditId] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleLogin = async () => {
   try {
@@ -38,6 +39,9 @@ function App() {
 
 const handleProductCreate = async () => {
   try {
+    setLoading(true);
+    setError("");
+
     const token = localStorage.getItem("token");
 
     if (editId) {
@@ -71,12 +75,15 @@ const handleProductCreate = async () => {
     setEditId(null);
 
   } catch (error) {
-    console.log(error.response?.data || error.message);
-  }
+  setError(error.response?.data?.message || "Something went wrong");
+}finally {
+  setLoading(false);
+}
 };
 
 const handleDeleteProduct = async (id) => {
   try {
+     setLoading(true);
 
     const token = localStorage.getItem("token");
 
@@ -93,6 +100,8 @@ const handleDeleteProduct = async (id) => {
 
   } catch(error){
     console.log(error.response?.data || error.message);
+  }finally {
+    setLoading(false);
   }
 };
 
@@ -186,7 +195,11 @@ return (
       setEditId,
       handleProductCreate,
       handleDeleteProduct,
-      handleEdit
+      handleEdit,
+      loading,
+      setLoading,
+      error,
+  setError
     }}
   >
     <div>

@@ -8,8 +8,21 @@ function ProductForm() {
   setName,
   setPrice,
   handleProductCreate,
-  editId
+  editId,
+  loading,
+  error,
+  setError
 } = useContext(AppContext);
+
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+    if (error) setError("");
+  };
+
+  const handlePriceChange = (e) => {
+    setPrice(e.target.value);
+    if (error) setError("");
+  };
 
   return (
     <div>
@@ -19,19 +32,31 @@ function ProductForm() {
         type="text"
         placeholder="Product Name"
         value={name}
-        onChange={(e)=>setName(e.target.value)}
+        onChange={handleNameChange}
       />
 
       <input
         type="number"
         placeholder="Price"
         value={price}
-        onChange={(e)=>setPrice(e.target.value)}
+        onChange={handlePriceChange}
       />
 
-      <button onClick={handleProductCreate}>
-  {editId ? "Update Product" : "Add Product"}
-</button>
+      <p style={{ color: "red", minHeight: "24px", margin: "8px 0" }}>
+        {error}
+      </p>
+
+      <button
+        type="button"
+        onClick={handleProductCreate}
+        disabled={loading || !name.trim() || !price}
+      >
+        {loading
+          ? "Processing..."
+          : editId
+          ? "Update Product"
+          : "Add Product"}
+      </button>
     </div>
   );
 }

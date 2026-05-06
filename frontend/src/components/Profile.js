@@ -11,9 +11,6 @@ function Profile({ handleLogout }) {
   setName,
   setPrice,
   handleProductCreate,
-  products,
-  handleDeleteProduct,
-  handleEdit,
   editId
 } = useContext(AppContext);
   return (
