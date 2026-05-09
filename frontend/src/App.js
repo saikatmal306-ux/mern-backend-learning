@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { AppContext } from "./context/AppContext";
-import axios from "axios";
+import API from "./services/api";
 import LoginForm from "./components/LoginForm";
 import Profile from "./components/Profile";
 
@@ -17,8 +17,8 @@ function App() {
 
   const handleLogin = async () => {
   try {
-    const res = await axios.post(
-      "http://localhost:5000/api/users/login",
+    const res = await API.post(
+  "/users/login",
       {
         email,
         password,
@@ -42,29 +42,21 @@ const handleProductCreate = async () => {
     setLoading(true);
     setError("");
 
-    const token = localStorage.getItem("token");
+    
 
     if (editId) {
       // UPDATE
-      await axios.put(
-        `http://localhost:5000/api/products/${editId}`,
+      await API.put(
+        `/products/${editId}`,
         { name, price },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
+        
       );
     } else {
       // CREATE
-      await axios.post(
-        "http://localhost:5000/api/products",
+      await API.post(
+  "/products",
         { name, price },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
+        
       );
     }
 
@@ -85,15 +77,11 @@ const handleDeleteProduct = async (id) => {
   try {
      setLoading(true);
 
-    const token = localStorage.getItem("token");
+    
 
-    await axios.delete(
-      `http://localhost:5000/api/products/${id}`,
-      {
-        headers:{
-          Authorization:`Bearer ${token}`
-        }
-      }
+    await API.delete(
+      `/products/${id}`,
+      
     );
 
     fetchProducts();
@@ -107,15 +95,11 @@ const handleDeleteProduct = async (id) => {
 
 const getProfile = async () => {
   try {
-    const token = localStorage.getItem("token");
+    
 
-    const res = await axios.get(
-      "http://localhost:5000/api/users/profile",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+    const res = await API.get(
+      "/users/profile",
+      
     );
 
     setUser(res.data.data); // 🔥 store in state
@@ -126,15 +110,11 @@ const getProfile = async () => {
 
 const fetchProducts = async () => {
   try {
-    const token = localStorage.getItem("token");
+    
 
-    const res = await axios.get(
-      "http://localhost:5000/api/products",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
+    const res = await API.get(
+  "/products",
+      
     );
 
     setProducts(res.data.data);
@@ -153,17 +133,12 @@ const handleEdit = (product) => {
 useEffect(() => {
   const fetchUser = async () => {
     try {
-      const token = localStorage.getItem("token");
 
-      if (!token) return;
+      
 
-      const res = await axios.get(
-        "http://localhost:5000/api/users/profile",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      const res = await API.get(
+        "/users/profile",
+        
       );
 
       setUser(res.data.data);
