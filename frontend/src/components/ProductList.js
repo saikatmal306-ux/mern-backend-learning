@@ -3,31 +3,42 @@ import { AppContext } from "../context/AppContext";
 
 function ProductList() {
   const {
-  products,
-  handleDeleteProduct,
-  handleEdit,
-  loading 
-} = useContext(AppContext);
+    products,
+    handleDeleteProduct,
+    handleEdit,
+    loading,
+    searchTerm,
+  } = useContext(AppContext);
 
-  return products.map((product) => (
-    <div key={product._id}>
-      <p>{product.name}</p>
-      <p>${product.price}</p>
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase().trim())
+  );
 
-      <button
-  onClick={() => handleDeleteProduct(product._id)}
-  disabled={loading}
->
-  {loading ? "Deleting..." : "Delete"}
-</button>
+  return (
+    <div>
+      {filteredProducts.length > 0 ? (
+        filteredProducts.map((product) => (
+          <div key={product._id}>
+            <p>{product.name}</p>
+            <p>${product.price}</p>
 
-      <button onClick={() => handleEdit(product)}>
-  Edit
-</button>
+            <button
+              onClick={() => handleDeleteProduct(product._id)}
+              disabled={loading}
+            >
+              {loading ? "Deleting..." : "Delete"}
+            </button>
 
-      <hr />
+            <button onClick={() => handleEdit(product)}>Edit</button>
+
+            <hr />
+          </div>
+        ))
+      ) : (
+        <p>No products found</p>
+      )}
     </div>
-  ));
+  );
 }
 
 export default ProductList;

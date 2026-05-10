@@ -14,6 +14,7 @@ function App() {
   const [editId, setEditId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleLogin = async () => {
   try {
@@ -174,6 +175,8 @@ return (
       loading,
       setLoading,
       error,
+      searchTerm,
+setSearchTerm,
   setError
     }}
   >

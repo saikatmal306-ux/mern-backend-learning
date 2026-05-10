@@ -11,7 +11,9 @@ function Profile({ handleLogout }) {
   setName,
   setPrice,
   handleProductCreate,
-  editId
+  editId,
+  searchTerm,
+setSearchTerm
 } = useContext(AppContext);
   return (
     <div>
@@ -30,6 +32,14 @@ function Profile({ handleLogout }) {
   editId={editId}
   
 />
+
+<input
+  type="text"
+  placeholder="Search products"
+  value={searchTerm}
+  onChange={(e) => setSearchTerm(e.target.value)}
+/>
+
 <ProductList />
     </div>
   );
