@@ -13,7 +13,9 @@ function Profile({ handleLogout }) {
   handleProductCreate,
   editId,
   searchTerm,
-setSearchTerm
+setSearchTerm,
+sortOption,
+setSortOption
 } = useContext(AppContext);
   return (
     <div>
@@ -39,6 +41,17 @@ setSearchTerm
   value={searchTerm}
   onChange={(e) => setSearchTerm(e.target.value)}
 />
+
+<select
+  value={sortOption}
+  onChange={(e) => setSortOption(e.target.value)}
+>
+  <option value="">Sort Products</option>
+  <option value="low-high">Price: Low to High</option>
+  <option value="high-low">Price: High to Low</option>
+  <option value="a-z">Name: A to Z</option>
+  <option value="z-a">Name: Z to A</option>
+</select>
 
 <ProductList />
     </div>

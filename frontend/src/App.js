@@ -15,6 +15,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [sortOption, setSortOption] = useState("");
 
   const handleLogin = async () => {
   try {
@@ -177,6 +178,8 @@ return (
       error,
       searchTerm,
 setSearchTerm,
+sortOption,
+setSortOption,
   setError
     }}
   >
