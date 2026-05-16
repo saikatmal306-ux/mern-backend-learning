@@ -31,6 +31,7 @@ function App() {
 
     // 🔥 STORE TOKEN
     localStorage.setItem("token", res.data.token);
+    localStorage.setItem("user", JSON.stringify(res.data.data));
     setUser(res.data.data);
     fetchProducts();
 
@@ -133,28 +134,18 @@ const handleEdit = (product) => {
 };
 
 useEffect(() => {
-  const fetchUser = async () => {
-    try {
+  const token = localStorage.getItem("token");
+  const storedUser = localStorage.getItem("user");
 
-      
-
-      const res = await API.get(
-        "/users/profile",
-        
-      );
-
-      setUser(res.data.data);
-      fetchProducts();
-    } catch (error) {
-      console.log(error.response?.data || error.message);
-    }
-  };
-
-  fetchUser();
+  if (token && storedUser) {
+    setUser(JSON.parse(storedUser));
+    fetchProducts();
+  }
 }, []);
 
 const handleLogout = () => {
   localStorage.removeItem("token"); // remove token
+  localStorage.removeItem("user"); // remove user
   setUser(null); // clear state
 };
 return (
