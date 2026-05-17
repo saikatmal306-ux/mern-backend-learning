@@ -3,6 +3,8 @@ import { AppContext } from "./context/AppContext";
 import API from "./services/api";
 import LoginForm from "./components/LoginForm";
 import Profile from "./components/Profile";
+import { Routes, Route, Navigate,  useNavigate } from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   const [email, setEmail] = useState("");
@@ -16,6 +18,7 @@ function App() {
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOption, setSortOption] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
   try {
@@ -34,6 +37,7 @@ function App() {
     localStorage.setItem("user", JSON.stringify(res.data.data));
     setUser(res.data.data);
     fetchProducts();
+    navigate("/profile"); // redirect to profile after login
 
   } catch (error) {
     console.log(error.response?.data || error.message);
@@ -147,6 +151,7 @@ const handleLogout = () => {
   localStorage.removeItem("token"); // remove token
   localStorage.removeItem("user"); // remove user
   setUser(null); // clear state
+  navigate("/login"); // redirect to login
 };
 return (
   <AppContext.Provider
@@ -175,9 +180,11 @@ setSortOption,
     }}
   >
     <div>
-      {user ? (
-        <Profile handleLogout={handleLogout} />
-      ) : (
+  <Routes>
+
+    <Route
+      path="/login"
+      element={
         <LoginForm
           email={email}
           password={password}
@@ -185,8 +192,25 @@ setSortOption,
           setPassword={setPassword}
           handleLogin={handleLogin}
         />
-      )}
-    </div>
+      }
+    />
+
+    <Route
+  path="/profile"
+  element={
+    <ProtectedRoute>
+      <Profile handleLogout={handleLogout} />
+    </ProtectedRoute>
+  }
+/>
+
+    <Route
+      path="*"
+      element={<Navigate to={user ? "/profile" : "/login"} />}
+    />
+
+  </Routes>
+</div>
   </AppContext.Provider>
 );
   
